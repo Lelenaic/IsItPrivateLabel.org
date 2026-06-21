@@ -12,6 +12,12 @@ export default function AppLayout({ children }) {
                     </Link>
                     <nav className="flex items-center gap-6">
                         <Link
+                            href="/"
+                            className="text-sm text-muted hover:text-foreground transition-colors"
+                        >
+                            Home
+                        </Link>
+                        <Link
                             href="/what-is-private-label"
                             className="text-sm text-muted hover:text-foreground transition-colors"
                         >
@@ -22,12 +28,6 @@ export default function AppLayout({ children }) {
                             className="text-sm text-muted hover:text-foreground transition-colors"
                         >
                             Our mission
-                        </Link>
-                        <Link
-                            href="/"
-                            className="text-sm text-muted hover:text-foreground transition-colors"
-                        >
-                            Home
                         </Link>
                     </nav>
                 </div>
