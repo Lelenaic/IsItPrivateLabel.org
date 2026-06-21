@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\SearchLog;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -15,18 +16,14 @@ class SearchController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::query()
-            ->with('company')
-            ->where(function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                    ->orWhere('serial_number', 'like', "%{$query}%")
-                    ->orWhereHas('company', function ($q) use ($query) {
-                        $q->where('name', 'like', "%{$query}%");
-                    });
-            })
-            ->orderByDesc('rating')
-            ->limit(20)
-            ->get();
+        $products = Product::search($query)
+            ->take(20)
+            ->get()
+            ->load('company');
+
+        SearchLog::create([
+            'query' => $query,
+        ]);
 
         return response()->json($products);
     }
