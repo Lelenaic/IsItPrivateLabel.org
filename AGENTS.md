@@ -18,6 +18,9 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - phpunit/phpunit (PHPUNIT) - v12
+- HeroUI - v3
+- TailwindCSS - v4
+- InertiaJS - v3
 
 ## Skills Activation
 
@@ -41,6 +44,8 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 ## Frontend Bundling
 
 - If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. Ask them.
+- Use HeroUI and Tailwind ONLY for designing the UI. Use HeroUI MCP if you need more info on how it works.
+- Use InertiaJS to create each page and whenever you can in the components
 
 ## Documentation Files
 
