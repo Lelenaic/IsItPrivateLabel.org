@@ -1,40 +1,78 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { SearchField, Label } from '@heroui/react'
+import { SearchField, Label, Spinner } from '@heroui/react'
 import AppLayout from '../Components/AppLayout'
 import ProductCard from '../Components/ProductCard'
+import FilterSort from '../Components/FilterSort'
 
 export default function Home() {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(false)
+    const [loadingMore, setLoadingMore] = useState(false)
     const [searched, setSearched] = useState(false)
+    const [meta, setMeta] = useState(null)
+    const [sort, setSort] = useState('rating_desc')
+    const [minRating, setMinRating] = useState(0)
     const abortRef = useRef(null)
+    const abortMoreRef = useRef(null)
     const debounceRef = useRef(null)
     const restoredRef = useRef(false)
+    const currentPageRef = useRef(1)
+    const sentinelRef = useRef(null)
 
-    const doSearch = useCallback((q) => {
+    const doSearch = useCallback((q, page = 1, currentSort, currentMinRating) => {
         if (q.trim().length < 2) {
             setResults([])
             setSearched(false)
+            setMeta(null)
             return
         }
 
-        if (abortRef.current) {
+        if (page === 1 && abortRef.current) {
             abortRef.current.abort()
+        }
+        if (page > 1 && abortMoreRef.current) {
+            abortMoreRef.current.abort()
         }
 
         const controller = new AbortController()
-        abortRef.current = controller
-        setLoading(true)
-        setSearched(true)
+        if (page === 1) {
+            abortRef.current = controller
+        } else {
+            abortMoreRef.current = controller
+        }
 
-        fetch(`/search?q=${encodeURIComponent(q.trim())}`, {
+        if (page === 1) {
+            setLoading(true)
+        } else {
+            setLoadingMore(true)
+        }
+        setSearched(true)
+        currentPageRef.current = page
+
+        const params = new URLSearchParams({
+            q: q.trim(),
+            page: String(page),
+            sort: currentSort || 'rating_desc',
+        })
+        if (currentMinRating && currentMinRating > 0) {
+            params.set('min_rating', String(currentMinRating))
+        }
+
+        fetch(`/search?${params.toString()}`, {
             signal: controller.signal,
         })
             .then((res) => res.json())
             .then((data) => {
-                setResults(data)
+                if (page === 1) {
+                    setResults(data.data)
+                } else {
+                    setResults((prev) => [...prev, ...data.data])
+                }
+                setMeta(data.meta)
                 setLoading(false)
+                setLoadingMore(false)
+
                 if (restoredRef.current) {
                     restoredRef.current = false
                     const scrollY = localStorage.getItem('searchScrollY')
@@ -49,6 +87,7 @@ export default function Home() {
             .catch((err) => {
                 if (err.name !== 'AbortError') {
                     setLoading(false)
+                    setLoadingMore(false)
                 }
             })
     }, [])
@@ -70,11 +109,15 @@ export default function Home() {
         if (query.trim().length < 2) {
             setResults([])
             setSearched(false)
+            setMeta(null)
+            currentPageRef.current = 1
             return
         }
 
+        currentPageRef.current = 1
+
         debounceRef.current = setTimeout(() => {
-            doSearch(query)
+            doSearch(query, 1, sort, minRating)
         }, 300)
 
         return () => {
@@ -82,7 +125,29 @@ export default function Home() {
                 clearTimeout(debounceRef.current)
             }
         }
-    }, [query, doSearch])
+    }, [query, sort, minRating, doSearch])
+
+    const hasMore = meta && meta.current_page < meta.last_page
+
+    useEffect(() => {
+        if (!sentinelRef.current || !hasMore || loadingMore) {
+            return
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+                    const nextPage = currentPageRef.current + 1
+                    doSearch(query, nextPage, sort, minRating)
+                }
+            },
+            { rootMargin: '200px' },
+        )
+
+        observer.observe(sentinelRef.current)
+
+        return () => observer.disconnect()
+    }, [hasMore, loadingMore, loading, query, sort, minRating, doSearch])
 
     return (
         <AppLayout>
@@ -145,18 +210,27 @@ export default function Home() {
                 <div className="max-w-6xl mx-auto px-4 pb-16">
                     {loading ? (
                         <div className="text-center py-12">
-                            <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
+                            <Spinner size="lg" />
                         </div>
                     ) : results.length > 0 ? (
                         <div className="space-y-4">
                             <p className="text-sm text-muted text-center">
-                                Found <strong className="text-foreground">{results.length}</strong> result{results.length !== 1 ? 's' : ''}
+                                Found <strong className="text-foreground">{meta?.total ?? results.length}</strong> result{(meta?.total ?? results.length) !== 1 ? 's' : ''}
                             </p>
+                            <div className="flex justify-center">
+                                <FilterSort onSortChange={setSort} onMinRatingChange={setMinRating} />
+                            </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {results.map((product) => (
                                     <ProductCard key={product.id} product={product} searchQuery={query} />
                                 ))}
                             </div>
+                            <div ref={sentinelRef} className="h-1" />
+                            {loadingMore && (
+                                <div className="text-center py-6">
+                                    <Spinner size="md" />
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <div className="text-center py-12 space-y-2">

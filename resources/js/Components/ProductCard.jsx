@@ -15,13 +15,19 @@ export default function ProductCard({ product, searchQuery = '' }) {
     return (
         <Link href={`/products/${product.slug}`} onClick={handleClick}>
             <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                {product.image_path && (
+                {product.image_path ? (
                     <div className="aspect-video overflow-hidden rounded-t-2xl">
                         <img
                             src={product.image_path}
                             alt={product.name}
                             className="w-full h-full object-cover"
                         />
+                    </div>
+                ) : (
+                    <div className="aspect-video bg-default-200 flex items-center justify-center rounded-t-2xl">
+                        <span className="text-default-500 text-lg font-medium px-4 text-center line-clamp-2">
+                            {product.name}
+                        </span>
                     </div>
                 )}
                 <Card.Header>

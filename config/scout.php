@@ -143,7 +143,7 @@ return [
             'products' => [
                 'searchableAttributes' => ['name', 'serial_number', 'company_name'],
                 'filterableAttributes' => ['company_name', 'rating'],
-                'sortableAttributes' => ['rating'],
+                'sortableAttributes' => ['rating', 'name'],
             ],
         ],
     ],

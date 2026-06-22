@@ -21,6 +21,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - HeroUI - v3
 - TailwindCSS - v4
 - InertiaJS - v3
+- laravel/scout (with meilisearch) - v11
 
 ## Skills Activation
 

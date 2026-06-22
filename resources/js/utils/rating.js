@@ -34,9 +34,9 @@ export function getRatingGradient(rating) {
 }
 
 export function getRatingLabel(rating) {
-    if (rating === 0) return 'Verified'
-    if (rating <= 2) return 'Very unlikely'
-    if (rating <= 4) return 'Unlikely'
+    if (rating === 0) return 'Verified non private label'
+    if (rating <= 2) return 'Very unlikely private label'
+    if (rating <= 4) return 'Unlikely private label'
     if (rating <= 6) return 'Suspicious'
     if (rating <= 8) return 'Likely private label'
     if (rating === 9) return 'Very likely private label'

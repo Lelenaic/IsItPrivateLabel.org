@@ -57,9 +57,9 @@ class Product extends Model
     {
         return [
             'name' => $this->name,
-            'serial_number' => $this->serial_number,
+            'serial_number' => (string) ($this->serial_number ?? ''),
             'rating' => $this->rating,
-            'company_name' => $this->company?->name,
+            'company_name' => $this->company?->name ?? '',
         ];
     }
 
