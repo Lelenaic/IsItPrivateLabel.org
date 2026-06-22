@@ -1,0 +1,17 @@
+{
+  "\u0000rolldown/runtime.js": [],
+  "resources/js/Components/AppLayout.jsx": [],
+  "resources/js/Components/FilterSort.jsx": [],
+  "resources/js/Components/PlatformLink.jsx": [],
+  "resources/js/Components/ProductCard.jsx": [],
+  "resources/js/Components/ProofItem.jsx": [],
+  "resources/js/Components/RatingIndicator.jsx": [],
+  "resources/js/Pages/Company.jsx": [],
+  "resources/js/Pages/Home.jsx": [],
+  "resources/js/Pages/OurMission.jsx": [],
+  "resources/js/Pages/Product.jsx": [],
+  "resources/js/Pages/Welcome.jsx": [],
+  "resources/js/Pages/WhatIsPrivateLabel.jsx": [],
+  "resources/js/app.jsx": [],
+  "resources/js/utils/rating.js": []
+}

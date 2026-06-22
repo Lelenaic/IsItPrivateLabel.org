@@ -1,0 +1,36 @@
+name: Build Docker Images
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push app image
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: ghcr.io/lelenaic/isitprivatelabel.org:latest
+
+      - name: Build and push SSR image
+        uses: docker/build-push-action@v7
+        with:
+          file: ssr.Dockerfile
+          push: true
+          tags: ghcr.io/lelenaic/isitprivatelabel.org/ssr:latest

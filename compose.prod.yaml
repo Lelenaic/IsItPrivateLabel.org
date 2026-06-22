@@ -1,0 +1,43 @@
+services:
+    app:
+        image: ghcr.io/lelenaic/isitprivatelabel.org
+        restart: unless-stopped
+        ports:
+            - '${APP_PORT:-80}:80'
+        env_file: .env
+        volumes:
+            - 'prod-storage:/var/www/html/storage'
+            - 'prod-bootstrap:/var/www/html/bootstrap/cache'
+        depends_on:
+            - meilisearch
+            - ssr
+        healthcheck:
+            test: ['CMD-SHELL', 'wget -qO- http://localhost/ > /dev/null || exit 1']
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+    ssr:
+        image: ghcr.io/lelenaic/isitprivatelabel.org/ssr
+        restart: unless-stopped
+        env_file: .env
+        healthcheck:
+            test: ['CMD-SHELL', "node -e \"require('http').get('http://localhost:13714', r => r.statusCode === 200 ? process.exit(0) : process.exit(1))\""]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 10s
+    meilisearch:
+        image: 'getmeili/meilisearch:latest'
+        restart: unless-stopped
+        volumes:
+            - 'prod-meilisearch:/meili_data'
+        healthcheck:
+            test: ['CMD', 'wget', '--no-verbose', '--spider', 'http://127.0.0.1:7700/health']
+            retries: 3
+            timeout: 5s
+
+volumes:
+    prod-meilisearch:
+    prod-storage:
+    prod-bootstrap:
