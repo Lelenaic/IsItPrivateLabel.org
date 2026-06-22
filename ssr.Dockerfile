@@ -7,4 +7,4 @@ COPY . .
 RUN npm ci
 RUN npm run build
 
-CMD php artisan inertia:start-ssr
+CMD node bootstrap/ssr/app.js
