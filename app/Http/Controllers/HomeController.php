@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Product;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Home');
+        $suggestedProducts = Product::query()
+            ->select('name')
+            ->whereNotNull('name')
+            ->inRandomOrder()
+            ->limit(3)
+            ->pluck('name');
+
+        return Inertia::render('Home', [
+            'suggestedProducts' => $suggestedProducts,
+        ]);
     }
 }

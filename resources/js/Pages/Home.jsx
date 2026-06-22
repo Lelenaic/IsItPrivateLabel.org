@@ -4,7 +4,7 @@ import AppLayout from '../Components/AppLayout'
 import ProductCard from '../Components/ProductCard'
 import FilterSort from '../Components/FilterSort'
 
-export default function Home() {
+export default function Home({ suggestedProducts = [] }) {
     const [query, setQuery] = useState('')
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(false)
@@ -180,27 +180,18 @@ export default function Home() {
                         </SearchField>
                     </div>
 
-                    {!searched && (
+                    {!searched && suggestedProducts.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-3 text-sm text-muted">
                             <span>Try:</span>
-                            <button
-                                onClick={() => setQuery('TechNova')}
-                                className="text-foreground/70 hover:text-foreground underline underline-offset-2 transition-colors"
-                            >
-                                TechNova
-                            </button>
-                            <button
-                                onClick={() => setQuery('sunset lamp')}
-                                className="text-foreground/70 hover:text-foreground underline underline-offset-2 transition-colors"
-                            >
-                                sunset lamp
-                            </button>
-                            <button
-                                onClick={() => setQuery('AliExpress')}
-                                className="text-foreground/70 hover:text-foreground underline underline-offset-2 transition-colors"
-                            >
-                                AliExpress
-                            </button>
+                            {suggestedProducts.map((name) => (
+                                <button
+                                    key={name}
+                                    onClick={() => setQuery(name)}
+                                    className="text-foreground/70 hover:text-foreground underline underline-offset-2 transition-colors"
+                                >
+                                    {name}
+                                </button>
+                            ))}
                         </div>
                     )}
                 </div>
