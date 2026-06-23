@@ -1,17 +1,19 @@
-FROM node:26 AS js
+FROM node:26 AS ssr
 
 WORKDIR /app
 
 COPY . .
 
-RUN npm ci &&npm run build
+RUN npm ci && npm run build
+
+CMD node bootstrap/ssr/app.js
 
 FROM chialab/php:8.5-apache AS app
 
 COPY docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 COPY . .
-COPY --from=js /app/public/build /var/www/html/public/build
+COPY --from=ssr /app/public/build /var/www/html/public/build
 
 RUN composer install --no-dev --no-autoloader --no-scripts --prefer-dist
 

@@ -25,12 +25,13 @@ jobs:
       - name: Build and push app image
         uses: docker/build-push-action@v7
         with:
+          target: app
           push: true
           tags: ghcr.io/lelenaic/isitprivatelabel.org:latest
 
       - name: Build and push SSR image
         uses: docker/build-push-action@v7
         with:
-          file: ssr.Dockerfile
+          target: ssr
           push: true
           tags: ghcr.io/lelenaic/isitprivatelabel.org/ssr:latest
