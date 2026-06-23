@@ -11,6 +11,7 @@ class HomeController extends Controller
     {
         $suggestedProducts = Product::query()
             ->select('name')
+            ->where('is_active', true)
             ->whereNotNull('name')
             ->inRandomOrder()
             ->limit(3)

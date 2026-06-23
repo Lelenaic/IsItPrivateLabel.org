@@ -21,7 +21,7 @@ class SearchController extends Controller
         $sort = $request->input('sort', 'rating_desc');
         $minRating = $request->input('min_rating');
 
-        $builder = Product::search($query);
+        $builder = Product::search($query)->where('is_active', true);
 
         if ($minRating !== null && is_numeric($minRating)) {
             $minRating = max(0, min(10, (int) $minRating));

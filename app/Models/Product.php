@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 
-#[Fillable(['name', 'slug', 'description', 'image_path', 'serial_number', 'rating', 'company_url'])]
+#[Fillable(['name', 'slug', 'description', 'image_path', 'serial_number', 'rating', 'company_id', 'company_url', 'is_active'])]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
@@ -21,6 +21,7 @@ class Product extends Model
     {
         return [
             'rating' => 'integer',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -51,6 +52,11 @@ class Product extends Model
     public function proofs(): HasMany
     {
         return $this->hasMany(Proof::class);
+    }
+
+    public function shouldBeSearchable(): bool
+    {
+        return $this->is_active;
     }
 
     public function toSearchableArray(): array

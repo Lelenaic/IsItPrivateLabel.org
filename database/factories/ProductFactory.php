@@ -21,12 +21,18 @@ class ProductFactory extends Factory
         return [
             'company_id' => Company::factory(),
             'name' => ucfirst($name),
-            'slug' => Str::slug($name) . '-' . fake()->unique()->numberBetween(1, 9999),
+            'slug' => Str::slug($name).'-'.fake()->unique()->numberBetween(1, 9999),
             'description' => fake()->optional(0.8)->sentence(12),
             'image_path' => null,
             'serial_number' => fake()->optional(0.6)->bothify('??-####-??'),
             'rating' => fake()->numberBetween(0, 10),
             'company_url' => fake()->optional(0.5)->url(),
+            'is_active' => fake()->boolean(90),
         ];
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn () => ['is_active' => false]);
     }
 }
