@@ -16,7 +16,7 @@ COPY --from=js /app/public/build /var/www/html/public/build
 RUN composer install --no-dev --no-autoloader --no-scripts --prefer-dist
 
 RUN composer dump-autoload --optimize --no-dev \
-    && php artisan package:discover --ansi
+    && php artisan filament:optimize
 
 RUN chown -R www-data:www-data .
 
