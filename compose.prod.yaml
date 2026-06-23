@@ -7,7 +7,6 @@ services:
         env_file: .env
         volumes:
             - 'prod-storage:/var/www/html/storage'
-            - 'prod-bootstrap:/var/www/html/bootstrap/cache'
         depends_on:
             - meilisearch
             - ssr
@@ -40,4 +39,3 @@ services:
 volumes:
     prod-meilisearch:
     prod-storage:
-    prod-bootstrap:
