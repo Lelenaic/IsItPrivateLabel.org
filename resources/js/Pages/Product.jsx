@@ -4,8 +4,11 @@ import AppLayout from '../Components/AppLayout'
 import RatingIndicator from '../Components/RatingIndicator'
 import PlatformLink from '../Components/PlatformLink'
 import ProofItem from '../Components/ProofItem'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function Product({ product }) {
+    const t = useTranslation()
+
     return (
         <AppLayout>
             <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
@@ -14,7 +17,7 @@ export default function Product({ product }) {
                         onClick={() => window.history.back()}
                         className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors cursor-pointer"
                     >
-                        ← Back to results
+                        {t('product.back_to_results')}
                     </button>
                     <div className="flex flex-col sm:flex-row gap-6 items-start">
                         {product.image_path && (
@@ -31,7 +34,7 @@ export default function Product({ product }) {
                                 {product.name}
                             </h1>
                             <div className="flex items-center gap-2 text-sm text-muted">
-                                <span>by</span>
+                                <span>{t('product.by')}</span>
                                 <InertiaLink
                                     href={`/companies/${product.company?.slug}`}
                                     className="text-foreground font-medium hover:underline"
@@ -41,7 +44,7 @@ export default function Product({ product }) {
                             </div>
                             {product.serial_number && (
                                 <p className="text-sm text-muted font-mono">
-                                    Serial: {product.serial_number}
+                                    {t('product.serial_prefix')} {product.serial_number}
                                 </p>
                             )}
                             {product.description && (
@@ -55,7 +58,7 @@ export default function Product({ product }) {
                     <Card className="p-6">
                         <div className="space-y-3">
                             <h2 className="text-sm font-semibold text-muted uppercase tracking-wide">
-                                Private Label Suspicion Score
+                                {t('product.suspicion_score')}
                             </h2>
                             <RatingIndicator rating={product.rating} size="lg" />
                         </div>
@@ -64,7 +67,7 @@ export default function Product({ product }) {
 
                 {product.links && product.links.length > 0 && (
                     <div className="space-y-4">
-                        <h2 className="text-lg font-semibold">External Links</h2>
+                        <h2 className="text-lg font-semibold">{t('product.external_links')}</h2>
                         <Card className="p-4">
                             <div className="space-y-3">
                                 {product.links.map((link) => (
@@ -73,7 +76,7 @@ export default function Product({ product }) {
                                 {product.company_url && (
                                     <div className="flex items-center gap-3">
                                         <Chip color="default" size="sm" variant="flat">
-                                            Company
+                                            {t('product.company_chip')}
                                         </Chip>
                                         <Link
                                             href={product.company_url}
@@ -81,7 +84,7 @@ export default function Product({ product }) {
                                             showAnchorIcon
                                             className="text-sm"
                                         >
-                                            View on company website
+                                            {t('product.view_on_company_website')}
                                         </Link>
                                     </div>
                                 )}
@@ -93,7 +96,7 @@ export default function Product({ product }) {
                 {product.proofs && product.proofs.length > 0 && (
                     <div className="space-y-4">
                         <h2 className="text-lg font-semibold">
-                            Evidence &amp; Proofs
+                            {t('product.evidence_and_proofs')}
                             <span className="text-sm font-normal text-muted ml-2">
                                 ({product.proofs.length})
                             </span>
@@ -111,7 +114,7 @@ export default function Product({ product }) {
                         href={`/companies/${product.company?.slug}`}
                         className="text-sm text-muted hover:text-foreground transition-colors"
                     >
-                        View all products from {product.company?.name} →
+                        {t('product.view_all_products', { name: product.company?.name })}
                     </InertiaLink>
                 </div>
             </div>

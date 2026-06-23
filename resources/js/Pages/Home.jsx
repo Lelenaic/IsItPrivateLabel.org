@@ -3,8 +3,10 @@ import { SearchField, Label, Spinner } from '@heroui/react'
 import AppLayout from '../Components/AppLayout'
 import ProductCard from '../Components/ProductCard'
 import FilterSort from '../Components/FilterSort'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function Home({ suggestedProducts = [] }) {
+    const t = useTranslation()
     const [query, setQuery] = useState('')
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(false)
@@ -158,7 +160,7 @@ export default function Home({ suggestedProducts = [] }) {
                             Is It <span className="text-danger">Private Label</span>?
                         </h1>
                         <p className="text-lg text-muted max-w-lg mx-auto">
-                            Search for a company, product, or serial number to check if it might be a private-labeled product.
+                            {t('home.subtitle')}
                         </p>
                     </div>
 
@@ -168,12 +170,12 @@ export default function Home({ suggestedProducts = [] }) {
                             value={query}
                             onChange={setQuery}
                         >
-                            <Label>Search</Label>
+                            <Label>{t('home.search_label')}</Label>
                             <SearchField.Group>
                                 <SearchField.SearchIcon />
                                 <SearchField.Input
                                     className="w-full"
-                                    placeholder="Company name, product, or serial number..."
+                                    placeholder={t('home.search_placeholder')}
                                 />
                                 <SearchField.ClearButton />
                             </SearchField.Group>
@@ -182,7 +184,7 @@ export default function Home({ suggestedProducts = [] }) {
 
                     {!searched && suggestedProducts.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-3 text-sm text-muted">
-                            <span>Try:</span>
+                            <span>{t('home.try_label')}</span>
                             {suggestedProducts.map((name) => (
                                 <button
                                     key={name}
@@ -206,7 +208,7 @@ export default function Home({ suggestedProducts = [] }) {
                     ) : results.length > 0 ? (
                         <div className="space-y-4">
                             <p className="text-sm text-muted text-center">
-                                Found <strong className="text-foreground">{meta?.total ?? results.length}</strong> result{(meta?.total ?? results.length) !== 1 ? 's' : ''}
+                                {t('home.found_results', { count: meta?.total ?? results.length })}
                             </p>
                             <div className="flex justify-center">
                                 <FilterSort onSortChange={setSort} onMinRatingChange={setMinRating} />
@@ -227,7 +229,7 @@ export default function Home({ suggestedProducts = [] }) {
                         <div className="text-center py-12 space-y-2">
                             <p className="text-3xl">🔍</p>
                             <p className="text-muted">
-                                No results found for "<strong className="text-foreground">{query}</strong>"
+                                {t('home.no_results', { query })}
                             </p>
                         </div>
                     )}

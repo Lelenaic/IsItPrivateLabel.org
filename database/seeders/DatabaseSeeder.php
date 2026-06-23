@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -11,6 +12,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        User::create([
+            'name' => 'Admin',
+            'email' => 'lenaic@lenaic.me',
+            'password' => bcrypt('password'),
+            'is_admin' => true,
+        ]);
+
         $companies = collect();
 
         for ($i = 0; $i < 10; $i++) {
@@ -39,6 +47,7 @@ class DatabaseSeeder extends Seeder
                     'serial_number' => strtoupper(fake()->bothify('??-####-??')),
                     'rating' => fake()->numberBetween(1, 10),
                     'company_url' => $company->website_url ? $company->website_url.'/products/'.fake()->slug() : null,
+                    'is_active' => true,
                 ]);
 
                 $proofCount = fake()->numberBetween(1, 4);

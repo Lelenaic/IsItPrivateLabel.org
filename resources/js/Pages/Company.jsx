@@ -4,8 +4,10 @@ import AppLayout from '../Components/AppLayout'
 import RatingIndicator from '../Components/RatingIndicator'
 import ProductCard from '../Components/ProductCard'
 import FilterSort from '../Components/FilterSort'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function Company({ company, averageRating }) {
+    const t = useTranslation()
     const [sort, setSort] = useState('rating_desc')
     const [minRating, setMinRating] = useState(0)
 
@@ -38,7 +40,7 @@ export default function Company({ company, averageRating }) {
                         onClick={() => window.history.back()}
                         className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors cursor-pointer"
                     >
-                        ← Back
+                        {t('company.back')}
                     </button>
                     <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
                         {company.name}
@@ -64,7 +66,7 @@ export default function Company({ company, averageRating }) {
                     <Card className="p-6">
                         <div className="space-y-3">
                             <h2 className="text-sm font-semibold text-muted uppercase tracking-wide">
-                                Average Suspicion Score
+                                {t('company.average_suspicion_score')}
                             </h2>
                             <div className="flex items-center gap-4">
                                 <span className="text-4xl font-bold">{averageRating}</span>
@@ -72,7 +74,7 @@ export default function Company({ company, averageRating }) {
                             </div>
                             <RatingIndicator rating={Math.round(averageRating)} size="md" />
                             <p className="text-xs text-muted">
-                                Based on {company.products.length} product{company.products.length !== 1 ? 's' : ''}
+                                {t('company.based_on_products', { count: company.products.length })}
                             </p>
                         </div>
                     </Card>
@@ -80,7 +82,7 @@ export default function Company({ company, averageRating }) {
 
                 <div className="space-y-4">
                     <h2 className="text-lg font-semibold">
-                        Products
+                        {t('company.products')}
                         <span className="text-sm font-normal text-muted ml-2">
                             ({filteredProducts.length})
                         </span>
@@ -96,7 +98,7 @@ export default function Company({ company, averageRating }) {
                         </div>
                     ) : (
                         <p className="text-muted text-center py-8">
-                            No products match the current filters.
+                            {t('company.no_products_match_filters')}
                         </p>
                     )}
                 </div>

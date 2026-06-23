@@ -1,10 +1,12 @@
 import { Card, Chip } from '@heroui/react'
 import { Link } from '@inertiajs/react'
 import { getRatingColor, getRatingLabel, getRatingTailwindColor } from '../utils/rating'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function ProductCard({ product, searchQuery = '' }) {
+    const t = useTranslation()
     const ratingColor = getRatingColor(product.rating)
-    const ratingLabel = getRatingLabel(product.rating)
+    const ratingLabel = getRatingLabel(product.rating, t)
     const barColor = getRatingTailwindColor(product.rating)
 
     const handleClick = () => {
@@ -58,7 +60,7 @@ export default function ProductCard({ product, searchQuery = '' }) {
                         <span className="text-xs text-muted">{ratingLabel}</span>
                         {product.serial_number && (
                             <span className="text-xs text-muted font-mono">
-                                SN: {product.serial_number}
+                                {t('product_card.serial_prefix')} {product.serial_number}
                             </span>
                         )}
                     </div>

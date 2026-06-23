@@ -1,6 +1,9 @@
 import { Card, Chip, Link } from '@heroui/react'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function ProofItem({ proof }) {
+    const t = useTranslation()
+
     const typeIcons = {
         text: '📝',
         image: '🖼️',
@@ -30,7 +33,7 @@ export default function ProofItem({ proof }) {
                 {proof.type === 'image' && (
                     <img
                         src={proof.content}
-                        alt={proof.description || 'Proof image'}
+                        alt={proof.description || t('proof_item.proof_image_alt')}
                         className="max-w-full h-auto rounded-lg max-h-64 object-contain"
                     />
                 )}
@@ -51,7 +54,7 @@ export default function ProofItem({ proof }) {
                         showAnchorIcon
                         className="text-sm"
                     >
-                        Download file
+                        {t('proof_item.download_file')}
                     </Link>
                 )}
             </Card.Content>

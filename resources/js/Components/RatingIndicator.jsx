@@ -1,9 +1,11 @@
 import { Chip } from '@heroui/react'
 import { getRatingColor, getRatingLabel, getRatingTailwindColor } from '../utils/rating'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function RatingIndicator({ rating, size = 'md', showLabel = true }) {
+    const t = useTranslation()
     const color = getRatingColor(rating)
-    const label = getRatingLabel(rating)
+    const label = getRatingLabel(rating, t)
     const barColor = getRatingTailwindColor(rating)
 
     return (

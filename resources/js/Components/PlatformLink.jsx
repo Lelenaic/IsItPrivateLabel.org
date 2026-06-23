@@ -1,8 +1,10 @@
 import { Chip, Link } from '@heroui/react'
 import { getPlatformLabel, getPlatformColor } from '../utils/rating'
+import { useTranslation } from '../hooks/useTranslation'
 
 export default function PlatformLink({ link }) {
-    const label = getPlatformLabel(link.platform)
+    const t = useTranslation()
+    const label = getPlatformLabel(link.platform, t)
     const color = getPlatformColor(link.platform)
 
     return (

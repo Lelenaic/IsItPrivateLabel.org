@@ -33,17 +33,41 @@ export function getRatingGradient(rating) {
     return 'from-red-500 to-red-600'
 }
 
-export function getRatingLabel(rating) {
-    if (rating === 0) return 'Verified non private label'
-    if (rating <= 2) return 'Very unlikely private label'
-    if (rating <= 4) return 'Unlikely private label'
-    if (rating <= 6) return 'Suspicious'
-    if (rating <= 8) return 'Likely private label'
-    if (rating === 9) return 'Very likely private label'
-    return 'Confirmed private label'
+export function getRatingLabel(rating, t) {
+    if (!t) {
+        if (rating === 0) return 'Verified non private label'
+        if (rating <= 2) return 'Very unlikely private label'
+        if (rating <= 4) return 'Unlikely private label'
+        if (rating <= 6) return 'Suspicious'
+        if (rating <= 8) return 'Likely private label'
+        if (rating === 9) return 'Very likely private label'
+        return 'Confirmed private label'
+    }
+
+    if (rating === 0) return t('rating.verified_non_private_label')
+    if (rating <= 2) return t('rating.very_unlikely_private_label')
+    if (rating <= 4) return t('rating.unlikely_private_label')
+    if (rating <= 6) return t('rating.suspicious')
+    if (rating <= 8) return t('rating.likely_private_label')
+    if (rating === 9) return t('rating.very_likely_private_label')
+    return t('rating.confirmed_private_label')
 }
 
-export function getPlatformLabel(platform) {
+export function getPlatformLabel(platform, t) {
+    const platformKey = {
+        aliexpress: 'platform_aliexpress',
+        'made-in-china': 'platform_made_in_china',
+        alibaba: 'platform_alibaba',
+        company: 'platform_company',
+        other: 'platform_link',
+    }
+
+    const key = platformKey[platform] || 'platform_link'
+
+    if (t) {
+        return t(`rating.${key}`)
+    }
+
     const labels = {
         aliexpress: 'AliExpress',
         'made-in-china': 'Made-in-China',

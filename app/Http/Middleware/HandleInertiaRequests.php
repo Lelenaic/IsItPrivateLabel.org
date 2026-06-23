@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Language;
+use App\Models\Translation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,7 +40,18 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+            'locale' => app()->getLocale(),
+            'translations' => $this->getTranslations(app()->getLocale()),
+            'languages' => Language::active()->select('code', 'name')->get(),
         ];
+    }
+
+    private function getTranslations(string $locale): array
+    {
+        return Cache::remember("translations.{$locale}", 3600, fn () => Translation::whereHas('language', fn ($q) => $q->where('code', $locale))
+            ->get()
+            ->mapWithKeys(fn ($t) => ["{$t->group_name}.{$t->key}" => $t->value])
+            ->toArray()
+        );
     }
 }

@@ -15,6 +15,8 @@ COPY docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY . .
 COPY --from=ssr /app/public/build /var/www/html/public/build
 
+RUN install-php-extensions redis
+
 RUN composer install --no-dev --no-autoloader --no-scripts --prefer-dist
 
 RUN composer dump-autoload --optimize --no-dev \

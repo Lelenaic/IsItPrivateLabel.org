@@ -35,7 +35,16 @@ services:
             test: ['CMD', 'wget', '--no-verbose', '--spider', 'http://127.0.0.1:7700/health']
             retries: 3
             timeout: 5s
+    redis:
+        image: 'redis'
+        restart: unless-stopped
+        volumes:
+            - 'prod-redis:/data'
+        command: --appendonly yes
+        healthcheck:
+            test: ['CMD', 'redis-cli', 'ping']
 
 volumes:
     prod-meilisearch:
     prod-storage:
+    prod-redis:

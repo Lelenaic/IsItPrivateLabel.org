@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OurMissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
@@ -14,3 +15,5 @@ Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name
 Route::get('/companies/{company:slug}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/what-is-private-label', [WhatIsPrivateLabelController::class, 'index'])->name('what-is-private-label');
 Route::get('/our-mission', [OurMissionController::class, 'index'])->name('our-mission');
+
+Route::get('/language/{language:code}', [LanguageController::class, 'switch'])->name('language.switch');

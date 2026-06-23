@@ -1,6 +1,10 @@
 import { Link } from '@inertiajs/react'
+import { useTranslation } from '../hooks/useTranslation'
+import LanguageSwitcher from './LanguageSwitcher'
 
 export default function AppLayout({ children }) {
+    const t = useTranslation()
+
     return (
         <div className="min-h-screen flex flex-col bg-background text-foreground">
             <header className="border-b border-default/40">
@@ -15,20 +19,21 @@ export default function AppLayout({ children }) {
                             href="/"
                             className="text-sm text-muted hover:text-foreground transition-colors"
                         >
-                            Home
+                            {t('layout.nav.home')}
                         </Link>
                         <Link
                             href="/what-is-private-label"
                             className="text-sm text-muted hover:text-foreground transition-colors"
                         >
-                            What is private label?
+                            {t('layout.nav.what_is_private_label')}
                         </Link>
                         <Link
                             href="/our-mission"
                             className="text-sm text-muted hover:text-foreground transition-colors"
                         >
-                            Our mission
+                            {t('layout.nav.our_mission')}
                         </Link>
+                        <LanguageSwitcher />
                     </nav>
                 </div>
             </header>
@@ -40,10 +45,10 @@ export default function AppLayout({ children }) {
             <footer className="border-t border-default/40 py-6">
                 <div className="max-w-6xl mx-auto px-4 text-center text-sm text-muted">
                     <p>
-                        IsItPrivateLabel.org — Helping consumers identify private-labeled products.
+                        {t('layout.footer.tagline')}
                     </p>
                     <p className="mt-1 text-xs">
-                        All ratings are based on publicly available evidence. Scores 1–9 indicate suspicion levels and are not definitive claims.
+                        {t('layout.footer.disclaimer')}
                     </p>
                 </div>
             </footer>
