@@ -29,13 +29,13 @@ export default function OurMission() {
                     <h2 className="text-2xl font-semibold text-foreground">{t('our_mission.our_principles_title')}</h2>
                     <ul className="list-disc list-inside space-y-2">
                         <li>
-                            <strong className="text-foreground">{t('our_mission.transparency')}</strong>
+                            {t('our_mission.transparency')}
                         </li>
                         <li>
-                            <strong className="text-foreground">{t('our_mission.fairness')}</strong>
+                            {t('our_mission.fairness')}
                         </li>
                         <li>
-                            <strong className="text-foreground">{t('our_mission.accuracy')}</strong>
+                            {t('our_mission.accuracy')}
                         </li>
                     </ul>
                 </div>
