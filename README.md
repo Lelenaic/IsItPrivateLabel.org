@@ -1,58 +1,137 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IsItPrivateLabel.org
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A consumer transparency platform that helps identify private-labeled products. We research and catalog products suspected of being manufactured by one company and sold under another's brand, assigning evidence-based suspicion scores to help consumers make informed purchasing decisions.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Product search** by company name, product name, or serial number (powered by Meilisearch)
+- **Suspicion scoring** (1-10) based on publicly available evidence such as manufacturer listings, packaging similarities, and supply chain data
+- **Evidence & proofs** — text, images, and links to source platforms (AliExpress, Alibaba, Made-in-China)
+- **Pricing data** — resale vs source price comparisons in multiple currencies
+- **Company profiles** with aggregated suspicion scores across their product catalog
+- **Multi-language support** with a database-driven translation system
+- **Public API** (v1) with auto-generated documentation via Scramble
+- **Admin panel** (Filament) for managing companies, products, proofs, and translations
+- **SSR** for improved performance and SEO
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Technology |
+|---|---|
+| Backend | Laravel 13, PHP 8.5 |
+| Frontend | React 19, Inertia.js v3, HeroUI v3, TailwindCSS v4 |
+| Admin | Filament 5 |
+| Search | Laravel Scout + Meilisearch |
+| Database | SQLite (dev) / MariaDB (prod) |
+| Cache / Queue | Redis |
+| SSR | Node.js |
+| Icons | @tabler/icons-react |
+| Build | Vite 8 |
+| Deployment | Docker (multi-stage), GitHub Actions, GHCR |
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.3+
+- Node.js 22+
+- Composer
+- Docker (recommended for local dev via Sail)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Getting Started
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Using Docker (recommended)
 
 ```bash
-composer require laravel/boost --dev
+# Clone and install
+git clone https://github.com/lelenaic/isitprivatelabel.org.git
+cd isitprivatelabel.org
+composer setup
+cp .env.example .env
+composer artisan key:generate
 
-php artisan boost:install
+# Start the environment
+vendor/bin/sail up -d
+
+# Run migrations and seed
+vendor/bin/sail artisan migrate --seed
+
+# Import search index
+vendor/bin/sail artisan scout:import "App\Models\Product"
+
+# Build frontend
+vendor/bin/sail npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The app will be available at `http://localhost`.
 
-## Contributing
+### Local Setup
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+npm install
+cp .env.example .env
+composer artisan key:generate
+composer artisan migrate --seed
+composer artisan scout:import "App\Models\Product"
+npm run build
+composer artisan serve
+```
 
-## Code of Conduct
+Ensure MySQL/MariaDB, Meilisearch, and Redis are running and configured in your `.env`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Development
 
-## Security Vulnerabilities
+```bash
+vendor/bin/sail npm run dev     # Vite dev server with HMR
+vendor/bin/sail artisan serve   # Laravel dev server
+vendor/bin/sail artisan pail    # Log viewer
+vendor/bin/sail artisan queue:listen  # Queue worker
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Or use the combined script:
+
+```bash
+vendor/bin/sail composer run dev
+```
+
+## Testing
+
+```bash
+vendor/bin/sail artisan test --compact
+```
+
+## API
+
+The public API is available at `/api/v1` with endpoints for search and product details. API documentation is auto-generated via Scramble and accessible at `/api`.
+
+## Project Structure
+
+```
+app/
+├── Filament/              # Admin panel resources
+├── Http/Controllers/      # Web + API controllers
+├── Models/                # Eloquent models (Company, Product, Proof, etc.)
+├── Providers/
+database/
+├── factories/             # Model factories
+├── migrations/            # Database migrations
+├── seeders/               # Database seeders (with sample data)
+resources/
+├── js/
+│   └── Pages/             # Inertia.js React pages (Home, Product, Company, etc.)
+├── css/
+routes/
+├── web.php                # Web routes
+├── api.php                # API routes
+```
+
+## Key Concepts
+
+- **Products** belong to a **Company** and have a numeric suspicion rating (1 = verified non-private-label, 10 = confirmed private label)
+- **Proofs** are evidence items (text, link, or image) attached to products, with per-language translations
+- **Product Links** connect products to source platforms (AliExpress, Alibaba, Made-in-China)
+- **Pricings** compare resale and source prices in multiple currencies
+- **Translations** are stored in the database, allowing multi-language content management via the admin panel
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License. See [LICENSE](LICENSE) for details.

@@ -1,4 +1,4 @@
-import { IconHelp, IconHome, IconRocket } from '@tabler/icons-react'
+import { IconExternalLink, IconHelp, IconHome, IconRocket } from '@tabler/icons-react'
 import { Link } from '@inertiajs/react'
 import { useTranslation } from '../hooks/useTranslation'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -37,6 +37,15 @@ export default function AppLayout({ children }) {
                             <IconRocket className="size-4" />
                             {t('layout.nav.our_mission')}
                         </Link>
+                        <a
+                            href="/api"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
+                        >
+                            <IconExternalLink className="size-4" />
+                            {t('layout.nav.api')}
+                        </a>
                         <LanguageSwitcher />
                     </nav>
                 </div>
