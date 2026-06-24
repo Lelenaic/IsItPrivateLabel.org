@@ -35,9 +35,32 @@ class Product extends Model
     {
         static::creating(function (Product $product) {
             if (empty($product->slug)) {
-                $product->slug = Str::slug($product->name);
+                $product->slug = static::uniqueSlug($product->name);
             }
         });
+    }
+
+    private static function uniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($name);
+        $base = $slug;
+        $counter = 1;
+
+        $query = static::query()->where('slug', $slug);
+        if ($ignoreId !== null) {
+            $query->where('id', '!=', $ignoreId);
+        }
+
+        while ($query->exists()) {
+            $slug = $base.'-'.$counter;
+            $query = static::query()->where('slug', $slug);
+            if ($ignoreId !== null) {
+                $query->where('id', '!=', $ignoreId);
+            }
+            $counter++;
+        }
+
+        return $slug;
     }
 
     public function company(): BelongsTo

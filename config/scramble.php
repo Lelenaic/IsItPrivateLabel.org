@@ -50,11 +50,27 @@ return [
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
          */
-        'description' => '',
+        'description' => <<<'MD'
+# Is It Private Label? API
+
+Public REST API for searching and retrieving private label product data.
+
+## Rate Limiting
+
+This API is rate-limited to **60 requests per minute** per IP address (or authenticated user). Exceeding this limit will return a `429 Too Many Requests` response.
+
+## Authentication
+
+No authentication is required. All endpoints are publicly accessible.
+
+## Response Format
+
+All responses are returned in JSON format. Search results are paginated and include `links` and `meta` objects for navigation.
+MD,
     ],
 
     'ui' => [
-        'title' => null,
+        'title' => 'Is It Private Label? API',
     ],
 
     'renderer' => 'elements',
