@@ -1,12 +1,15 @@
+import { IconLanguage } from '@tabler/icons-react'
 import { router, usePage } from '@inertiajs/react'
 import { Label, ListBox, Select } from '@heroui/react'
 
 export default function LanguageSwitcher() {
     const { locale, languages } = usePage().props
+    const { url } = usePage()
 
     const handleLanguageChange = (code) => {
         if (code !== locale) {
-            router.get(`/language/${code}`)
+            localStorage.setItem('locale', code)
+            router.get(`/language/${code}`, { redirect: url })
         }
     }
 
@@ -21,7 +24,10 @@ export default function LanguageSwitcher() {
             onChange={handleLanguageChange}
         >
             <Label className="sr-only">Language</Label>
-            <Select.Trigger>
+            <Select.Trigger className="items-center gap-2.5">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-default text-foreground">
+                    <IconLanguage className="size-4" />
+                </span>
                 <Select.Value />
                 <Select.Indicator />
             </Select.Trigger>

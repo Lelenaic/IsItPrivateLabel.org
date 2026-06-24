@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Language;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
@@ -13,6 +14,9 @@ class SetLocale
     {
         if ($sessionLocale = session('locale')) {
             $locale = $sessionLocale;
+        } elseif ($cookieLocale = $request->cookie('locale')) {
+            $locale = $cookieLocale;
+            Session::put('locale', $locale);
         } else {
             $locale = $this->resolveFromAcceptLanguage($request);
         }

@@ -1,3 +1,4 @@
+import { IconHelp, IconHome, IconRocket } from '@tabler/icons-react'
 import { Link } from '@inertiajs/react'
 import { useTranslation } from '../hooks/useTranslation'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -17,20 +18,23 @@ export default function AppLayout({ children }) {
                     <nav className="flex items-center gap-6">
                         <Link
                             href="/"
-                            className="text-sm text-muted hover:text-foreground transition-colors"
+                            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
                         >
+                            <IconHome className="size-4" />
                             {t('layout.nav.home')}
                         </Link>
                         <Link
                             href="/what-is-private-label"
-                            className="text-sm text-muted hover:text-foreground transition-colors"
+                            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
                         >
+                            <IconHelp className="size-4" />
                             {t('layout.nav.what_is_private_label')}
                         </Link>
                         <Link
                             href="/our-mission"
-                            className="text-sm text-muted hover:text-foreground transition-colors"
+                            className="flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors"
                         >
+                            <IconRocket className="size-4" />
                             {t('layout.nav.our_mission')}
                         </Link>
                         <LanguageSwitcher />

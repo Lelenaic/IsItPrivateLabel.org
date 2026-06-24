@@ -48,6 +48,19 @@ class HandleInertiaRequests extends Middleware
 
     private function getTranslations(string $locale): array
     {
+        $defaultCode = Language::default()->first()?->code ?? config('app.fallback_locale', 'en');
+
+        $defaultTranslations = $this->getTranslationsForLocale($defaultCode);
+
+        if ($locale === $defaultCode) {
+            return $defaultTranslations;
+        }
+
+        return array_merge($defaultTranslations, $this->getTranslationsForLocale($locale));
+    }
+
+    private function getTranslationsForLocale(string $locale): array
+    {
         return Cache::remember("translations.{$locale}", 3600, fn () => Translation::whereHas('language', fn ($q) => $q->where('code', $locale))
             ->get()
             ->mapWithKeys(fn ($t) => ["{$t->group_name}.{$t->key}" => $t->value])

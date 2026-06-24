@@ -21,6 +21,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - HeroUI - v3
 - TailwindCSS - v4
 - InertiaJS - v3
+- @tabler/icons-react - icons
 - laravel/scout (with meilisearch) - v11
 
 ## Skills Activation
@@ -47,6 +48,7 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - If the user doesn't see a frontend change reflected in the UI, it could mean they need to run `vendor/bin/sail npm run build`, `vendor/bin/sail npm run dev`, or `vendor/bin/sail composer run dev`. Ask them.
 - Use HeroUI and Tailwind ONLY for designing the UI. Use HeroUI MCP if you need more info on how it works.
 - Use InertiaJS to create each page and whenever you can in the components
+- Use `@tabler/icons-react` for all icons (e.g., `import { IconLanguage } from '@tabler/icons-react'`). Do not use inline SVGs or other icon libraries.
 
 ## Documentation Files
 
