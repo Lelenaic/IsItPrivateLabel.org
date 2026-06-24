@@ -42,10 +42,6 @@ class TranslationResource extends Resource
                 TextColumn::make('key')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('language.name')
-                    ->label('Language')
-                    ->badge()
-                    ->sortable(),
                 TextColumn::make('value')
                     ->limit(60)
                     ->toggleable(),

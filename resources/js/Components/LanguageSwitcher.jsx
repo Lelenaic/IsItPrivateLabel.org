@@ -6,7 +6,7 @@ export default function LanguageSwitcher() {
 
     const handleLanguageChange = (code) => {
         if (code !== locale) {
-            router.get(route('language.switch', { language: code }))
+            router.get(`/language/${code}`)
         }
     }
 
