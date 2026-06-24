@@ -1,7 +1,5 @@
 <?php
 
-use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
-
 return [
     /*
      * Which routes to document. String or array form; use Scramble::routes() for custom selection.
@@ -66,6 +64,10 @@ No authentication is required. All endpoints are publicly accessible.
 ## Response Format
 
 All responses are returned in JSON format. Search results are paginated and include `links` and `meta` objects for navigation.
+
+## OpenAPI Specification
+
+The full OpenAPI 3.1.0 JSON document is available at `/docs/api.json`.
 MD,
     ],
 
@@ -158,7 +160,6 @@ MD,
 
     'middleware' => [
         'web',
-        RestrictedDocsAccess::class,
     ],
 
     'extensions' => [],
