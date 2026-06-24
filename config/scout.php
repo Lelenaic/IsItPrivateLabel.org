@@ -142,7 +142,7 @@ return [
         'index-settings' => [
             'products' => [
                 'searchableAttributes' => ['name', 'serial_number', 'company_name'],
-                'filterableAttributes' => ['company_name', 'rating'],
+                'filterableAttributes' => ['company_name', 'rating', 'is_active'],
                 'sortableAttributes' => ['rating', 'name'],
             ],
         ],

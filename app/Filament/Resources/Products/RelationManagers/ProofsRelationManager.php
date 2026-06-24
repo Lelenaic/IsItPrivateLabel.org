@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\RelationManagers;
 
+use App\Models\Language;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -10,15 +11,19 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -81,6 +86,20 @@ class ProofsRelationManager extends RelationManager
                 }),
             TextInput::make('description')
                 ->default(null),
+            Toggle::make('show_in_all_languages')
+                ->default(true)
+                ->live()
+                ->afterStateUpdated(function (Toggle $component, Get $get, Set $set): void {
+                    if ($get('show_in_all_languages')) {
+                        $set('visible_language_ids', []);
+                    }
+                }),
+            CheckboxList::make('visible_language_ids')
+                ->relationship('visibleInLanguages', 'name')
+                ->label('Visible in Languages')
+                ->options(fn () => Language::active()->pluck('name', 'id'))
+                ->hidden(fn (Get $get): bool => (bool) $get('show_in_all_languages'))
+                ->columnSpanFull(),
         ];
     }
 
@@ -103,6 +122,10 @@ class ProofsRelationManager extends RelationManager
                     ->searchable(),
                 TextColumn::make('description')
                     ->searchable(),
+                IconColumn::make('show_in_all_languages')
+                    ->boolean()
+                    ->label('All Languages')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

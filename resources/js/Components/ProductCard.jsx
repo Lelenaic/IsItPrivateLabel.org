@@ -9,6 +9,10 @@ export default function ProductCard({ product, searchQuery = '' }) {
     const ratingLabel = getRatingLabel(product.rating, t)
     const barColor = getRatingTailwindColor(product.rating)
 
+    const displayName = product.translated_name ?? product.name
+    const displayImage = product.translated_image_path ?? product.image_path
+    const translationAvailable = product.translation_available ?? true
+
     const handleClick = () => {
         localStorage.setItem('searchQuery', searchQuery)
         localStorage.setItem('searchScrollY', String(window.scrollY))
@@ -17,18 +21,18 @@ export default function ProductCard({ product, searchQuery = '' }) {
     return (
         <Link href={`/products/${product.slug}`} onClick={handleClick}>
             <Card className="h-full hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                {product.image_path ? (
+                {displayImage ? (
                     <div className="aspect-video overflow-hidden rounded-t-2xl">
                         <img
-                            src={product.image_path}
-                            alt={product.name}
+                            src={displayImage}
+                            alt={displayName}
                             className="w-full h-full object-cover"
                         />
                     </div>
                 ) : (
                     <div className="aspect-video bg-default-200 flex items-center justify-center rounded-t-2xl">
                         <span className="text-default-500 text-lg font-medium px-4 text-center line-clamp-2">
-                            {product.name}
+                            {displayName}
                         </span>
                     </div>
                 )}
@@ -36,7 +40,7 @@ export default function ProductCard({ product, searchQuery = '' }) {
                     <div className="flex items-start justify-between gap-2 w-full">
                         <div className="flex-1 min-w-0">
                             <Card.Title className="text-base truncate">
-                                {product.name}
+                                {displayName}
                             </Card.Title>
                             <Card.Description className="text-sm">
                                 {product.company?.name}
@@ -62,6 +66,11 @@ export default function ProductCard({ product, searchQuery = '' }) {
                             <span className="text-xs text-muted font-mono">
                                 {t('product_card.serial_prefix')} {product.serial_number}
                             </span>
+                        )}
+                        {!translationAvailable && (
+                            <Chip size="sm" variant="flat" color="warning" className="mt-1">
+                                {t('product_card.translation_unavailable')}
+                            </Chip>
                         )}
                     </div>
                 </Card.Content>

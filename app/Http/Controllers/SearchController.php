@@ -44,7 +44,18 @@ class SearchController extends Controller
 
         $products = $builder->paginate($perPage, 'products', $page);
 
-        $products->getCollection()->load('company');
+        $products->getCollection()->load(['company', 'translations.language']);
+
+        $locale = app()->getLocale();
+
+        $products->getCollection()->transform(function (Product $product) use ($locale) {
+            $product->translated_name = $product->getTranslatedName($locale);
+            $product->translated_description = $product->getTranslatedDescription($locale);
+            $product->translated_image_path = $product->getTranslatedImagePath($locale);
+            $product->translation_available = $product->isAvailableInLocale($locale);
+
+            return $product;
+        });
 
         SearchLog::create([
             'query' => $query,

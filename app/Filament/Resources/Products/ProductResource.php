@@ -6,6 +6,8 @@ use App\Filament\Resources\Products\Pages\CreateProduct;
 use App\Filament\Resources\Products\Pages\EditProduct;
 use App\Filament\Resources\Products\Pages\ListProducts;
 use App\Filament\Resources\Products\RelationManagers\LinksRelationManager;
+use App\Filament\Resources\Products\RelationManagers\PricingsRelationManager;
+use App\Filament\Resources\Products\RelationManagers\ProductTranslationsRelationManager;
 use App\Filament\Resources\Products\RelationManagers\ProofsRelationManager;
 use App\Filament\Resources\Products\Schemas\ProductForm;
 use App\Filament\Resources\Products\Tables\ProductsTable;
@@ -45,6 +47,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
+            PricingsRelationManager::class,
+            ProductTranslationsRelationManager::class,
             ProofsRelationManager::class,
             LinksRelationManager::class,
         ];

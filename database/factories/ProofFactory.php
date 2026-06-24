@@ -31,7 +31,7 @@ class ProofFactory extends Factory
         ];
     }
 
-    public function text(string $content = null): static
+    public function text(?string $content = null): static
     {
         return $this->state(fn () => [
             'type' => 'text',
@@ -39,7 +39,7 @@ class ProofFactory extends Factory
         ]);
     }
 
-    public function link(string $url = null): static
+    public function link(?string $url = null): static
     {
         return $this->state(fn () => [
             'type' => 'link',
@@ -47,11 +47,21 @@ class ProofFactory extends Factory
         ]);
     }
 
-    public function image(string $path = null): static
+    public function image(?string $path = null): static
     {
         return $this->state(fn () => [
             'type' => 'image',
             'content' => $path ?? 'https://placehold.co/600x400/png?text=Proof+Image',
         ]);
+    }
+
+    public function showInAllLanguages(): static
+    {
+        return $this->state(fn () => ['show_in_all_languages' => true]);
+    }
+
+    public function hideInSomeLanguages(): static
+    {
+        return $this->state(fn () => ['show_in_all_languages' => false]);
     }
 }

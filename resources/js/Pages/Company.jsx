@@ -21,8 +21,8 @@ export default function Company({ company, averageRating }) {
         const sortFns = {
             rating_desc: (a, b) => b.rating - a.rating,
             rating_asc: (a, b) => a.rating - b.rating,
-            name_asc: (a, b) => a.name.localeCompare(b.name),
-            name_desc: (a, b) => b.name.localeCompare(a.name),
+            name_asc: (a, b) => (a.translated_name ?? a.name).localeCompare(b.translated_name ?? b.name),
+            name_desc: (a, b) => (b.translated_name ?? b.name).localeCompare(a.translated_name ?? a.name),
         }
 
         if (sortFns[sort]) {
