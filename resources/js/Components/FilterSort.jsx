@@ -25,9 +25,9 @@ export default memo(function FilterSort({ onSortChange, onMinRatingChange }) {
     )
 
     return (
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end gap-4">
             <Select
-                className="w-56"
+                className="w-full sm:w-56"
                 value={sort}
                 onChange={handleSortChange}
             >
@@ -59,7 +59,7 @@ export default memo(function FilterSort({ onSortChange, onMinRatingChange }) {
             </Select>
 
             <Slider
-                className="w-64"
+                className="w-full sm:w-64"
                 minValue={0}
                 maxValue={10}
                 step={1}

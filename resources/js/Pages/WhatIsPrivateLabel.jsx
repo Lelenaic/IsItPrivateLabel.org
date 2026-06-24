@@ -7,7 +7,7 @@ export default function WhatIsPrivateLabel() {
     return (
         <AppLayout>
             <div className="max-w-3xl mx-auto px-4 py-16 space-y-8">
-                <h1 className="text-4xl font-bold tracking-tight">
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                     {t('what_is_private_label.title_prefix')} <span className="text-danger">{t('what_is_private_label.title_highlight')}</span>?
                 </h1>
 

@@ -7,7 +7,7 @@ export default function OurMission() {
     return (
         <AppLayout>
             <div className="max-w-3xl mx-auto px-4 py-16 space-y-8">
-                <h1 className="text-4xl font-bold tracking-tight">
+                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
                     {t('our_mission.title_prefix')} <span className="text-danger">{t('our_mission.title_highlight')}</span>
                 </h1>
 
